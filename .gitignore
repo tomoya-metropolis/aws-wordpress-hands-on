@@ -1,0 +1,5 @@
+.ansible
+.vscode
+venv
+ansible/hosts
+ansible/key
