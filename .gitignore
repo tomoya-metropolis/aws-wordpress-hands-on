@@ -3,3 +3,6 @@
 venv
 ansible/hosts
 ansible/key
+.terraform/
+terraform.tfstate*
+.terraform.lock.hcl
