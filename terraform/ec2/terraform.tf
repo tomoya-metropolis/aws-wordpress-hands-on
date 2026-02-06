@@ -9,6 +9,10 @@ terraform {
   required_version = ">= 1.2"
 }
 
+provider "aws" {
+  region     = "ap-northeast-1"
+}
+
 data "aws_vpc" "wordpress-vpc" {
   filter {
     name   = "tag:Name"
@@ -16,17 +20,17 @@ data "aws_vpc" "wordpress-vpc" {
   }
 }
 
-resource "aws_security_group" "worpress-security-groups" {
-  name   = "worpress-security-groups"
+resource "aws_security_group" "wordpress-security-group" {
+  name   = "wordpress-security-group"
   vpc_id = data.aws_vpc.wordpress-vpc.id
 
   tags = {
-    Name = "worpress-security-groups"
+    Name = "wordpress-security-group"
   }
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
-  security_group_id = aws_security_group.worpress-security-groups.id
+  security_group_id = aws_security_group.wordpress-security-group.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 22
   ip_protocol       = "tcp"
@@ -34,7 +38,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_http" {
-  security_group_id = aws_security_group.worpress-security-groups.id
+  security_group_id = aws_security_group.wordpress-security-group.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
   ip_protocol       = "tcp"
@@ -42,7 +46,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_http" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
-  security_group_id = aws_security_group.worpress-security-groups.id
+  security_group_id = aws_security_group.wordpress-security-group.id
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
 }
@@ -73,7 +77,7 @@ resource "aws_instance" "wordpress-1a" {
   subnet_id                   = data.aws_subnet.public-1a.id
   associate_public_ip_address = "true"
   key_name                    = "ec2"
-  vpc_security_group_ids      = [aws_security_group.worpress-security-groups.id]
+  vpc_security_group_ids      = [aws_security_group.wordpress-security-group.id]
 
   tags = {
     Name = "wordpress-1a"
@@ -86,7 +90,7 @@ resource "aws_instance" "wordpress-1c" {
   subnet_id                   = data.aws_subnet.public-1c.id
   associate_public_ip_address = "true"
   key_name                    = "ec2"
-  vpc_security_group_ids      = [aws_security_group.worpress-security-groups.id]
+  vpc_security_group_ids      = [aws_security_group.wordpress-security-group.id]
 
   tags = {
     Name = "wordpress-1c"
