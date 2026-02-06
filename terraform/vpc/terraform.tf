@@ -9,6 +9,10 @@ terraform {
   required_version = ">= 1.2"
 }
 
+provider "aws" {
+  region     = "ap-northeast-1"
+}
+
 resource "aws_vpc" "wordpress-vpc" {
   cidr_block       = "10.0.0.0/16"
   instance_tenancy = "default"
