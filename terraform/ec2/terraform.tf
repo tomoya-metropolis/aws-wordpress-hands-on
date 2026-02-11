@@ -73,7 +73,7 @@ data "aws_subnet" "public-1c" {
 
 resource "aws_instance" "wordpress-1a" {
   ami                         = data.aws_ami.wordpress-ami.id
-  instance_type               = "t3.micro"
+  instance_type               = "t2.small"
   subnet_id                   = data.aws_subnet.public-1a.id
   associate_public_ip_address = "true"
   key_name                    = "ec2"
@@ -86,7 +86,7 @@ resource "aws_instance" "wordpress-1a" {
 
 resource "aws_instance" "wordpress-1c" {
   ami                         = data.aws_ami.wordpress-ami.id
-  instance_type               = "t3.micro"
+  instance_type               = "t2.small"
   subnet_id                   = data.aws_subnet.public-1c.id
   associate_public_ip_address = "true"
   key_name                    = "ec2"
