@@ -88,6 +88,7 @@ resource "aws_lb" "wordpress-lb" {
   load_balancer_type = "application"
   security_groups    = [data.aws_security_group.wordpress-security-group.id]
   subnets            = [data.aws_subnet.public-1a.id, data.aws_subnet.public-1c.id]
+  idle_timeout       = 240
 }
 
 resource "aws_lb_listener" "wordpress-lb-listener" {
