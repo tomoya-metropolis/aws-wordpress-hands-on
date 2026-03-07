@@ -33,6 +33,13 @@ resource "aws_lb_target_group" "wordpress-elb-target-group" {
     port     = "traffic-port"
     protocol = "HTTP"
   }
+
+  stickiness {
+    enabled         = true
+    cookie_name     = "wordpress_cookie"
+    type            = "lb_cookie"
+    cookie_duration = 86400
+  }
 }
 
 data "aws_instance" "wordpress-1a" {
